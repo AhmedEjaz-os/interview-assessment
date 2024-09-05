@@ -1,7 +1,73 @@
-<div *ngFor="let appointment of appointments$ | async" cdkDrag>
-  <mat-card>{{appointment.title}} - {{appointment.date | date}}</mat-card>
-</div>
+<ng-container *ngTemplateOutlet="form"></ng-container>
+<ng-container *ngTemplateOutlet="calender"></ng-container>
 
-<div>
-	Calender is working
-</div>
+<ng-template #form>
+  <mat-form-field>
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</ng-template>
+
+<ng-template #calender>
+    <div class="calendar dark">
+      <div class="calendar_inner">
+        <div class="calendar_controls">
+          <div class="calendar_headings" id="calendar_headings">
+            <i class="fa-solid fa-arrow-left" id="prev"></i>
+            <h2 class="months_year"></h2>
+            <i class="fa-solid fa-arrow-right" id="next"></i>
+          </div>
+          <div class="current_datetime">
+            <p class="daytxt">Today</p>
+            <p class="datetxt" id="datetxt">Tue, 10, Oct 2023</p>
+          </div>
+          <div class="days_date">
+            <ul class="days">
+              <li>Sun</li>
+              <li>Mon</li>
+              <li>Tue</li>
+              <li>Wed</li>
+              <li>Thu</li>
+              <li>Fri</li>
+              <li>Sat</li>
+            </ul>
+            <ul class="dates" id="dates">
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li class="active">5</li>
+              <li>6</li>
+              <li>7</li>
+              <li>8</li>
+              <li>9</li>
+              <li>10</li>
+              <li>11</li>
+              <li>12</li>
+              <li>13</li>
+              <li>14</li>
+              <li>15</li>
+              <li>17</li>
+              <li>18</li>
+              <li>19</li>
+              <li>20</li>
+              <li>21</li>
+              <li>22</li>
+              <li>23</li>
+              <li>24</li>
+              <li>25</li>
+              <li class="dummy">26</li>
+              <li class="dummy">27</li>
+              <li class="dummy">28</li>
+              <li class="dummy">29</li>
+              <li class="dummy">30</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="month_year"></div>
+</ng-template>
