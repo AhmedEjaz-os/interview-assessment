@@ -1,0 +1,7 @@
+<div *ngFor="let appointment of appointments$ | async" cdkDrag>
+  <mat-card>{{appointment.title}} - {{appointment.date | date}}</mat-card>
+</div>
+
+<div>
+	Calender is working
+</div>
