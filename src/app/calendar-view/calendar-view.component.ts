@@ -10,6 +10,7 @@ import {
   transferArrayItem,
   CdkDrag,
   CdkDropList,
+  CdkDropListGroup
 } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,7 +32,8 @@ import { MatButtonModule } from '@angular/material/button';
     CdkDropList,
     CdkDrag,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    CdkDropListGroup
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -39,6 +41,7 @@ export class CalendarViewComponent {
   @ViewChild('datetxt') datetxtEl: ElementRef;
   @ViewChild('dates') datesEl: ElementRef;
   @ViewChild('month_year') monthYearEl: ElementRef;
+  @ViewChild('appointment') appointment: ElementRef;
   todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
   done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
   dateObj: any;
@@ -74,6 +77,7 @@ export class CalendarViewComponent {
   };
   datesElement: any;
   monthYearElement: any;
+  appointmentElement: any;
   firtDayOfMonth: any = null;
   lastDateofMonth: any = null;
   lastDayofMonth: any = null;
@@ -95,6 +99,7 @@ export class CalendarViewComponent {
     this.datetxtEl.nativeElement.innerHTML = `${this.dayName},${this.date}, ${this.dmObj.months[this.month]}, ${this.year}`;
     this.datesElement = this.datesEl.nativeElement;
     this.monthYearElement = this.monthYearEl.nativeElement;
+    this.appointmentElement = this.appointment.nativeElement;
     this.monthYearElement.innerHTML = `${this.dmObj.months[this.month]}, ${this.year}`;
     this.displayCalendar();
   }
@@ -131,15 +136,16 @@ export class CalendarViewComponent {
     let days: any = "";
     let iterator: any = [];
     // previous month last days
+
     for (let i = this.firtDayOfMonth; i > 0; i--) {
       for (let j = 0; j < this.getDateFromUser.length; j++) {
         if (this.getDateFromUser[j] === `${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}`) {
-          days += `<li class="dummy ${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}">${this.lastDateofLastMonth - i + 1} ${this.getDateFromUser[j] === `${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}` ? this.getAppointmentTemplate(`${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}`) : ''} </li>`;
+          days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dateEl dummy ${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}">${this.lastDateofLastMonth - i + 1} ${this.getDateFromUser[j] === `${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}` ? this.getAppointmentTemplate() : ''} </div>`;
           iterator.push(i);
         } 
       }
       if (this.getDateFromUser.length <= 0 || (!iterator.includes(i))) {
-        days += `<li class="dummy ${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}">${this.lastDateofLastMonth - i + 1} </li>`;
+        days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dateEl dummy ${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}">${this.lastDateofLastMonth - i + 1} </div>`;
       }
     }
     iterator = [];
@@ -152,12 +158,12 @@ export class CalendarViewComponent {
           : `${i}/${this.month + 1}/${this.year}`;
       for (let j = 0; j < this.getDateFromUser.length; j++) {
         if (this.getDateFromUser[j] === `${i}/${this.month + 1}/${this.year}`) {
-          days += `<li class="${checkToday}">${i} ${this.getDateFromUser[j] === `${i}/${this.month + 1}/${this.year}` ? this.getAppointmentTemplate(`${i}/${this.month + 1}/${this.year}`) : ''}</li>`;
+          days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dateEl ${checkToday}">${i} ${this.getDateFromUser[j] === `${i}/${this.month + 1}/${this.year}` ? this.getAppointmentTemplate() : ''}</div>`;
           iterator.push(i);
         }
       }
       if (this.getDateFromUser.length <= 0 || (!iterator.includes(i))) {
-        days += `<li class="${checkToday}">${i}</li>`;
+        days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dateEl ${checkToday}">${i}</div>`;
       }
     }
     iterator = [];
@@ -165,12 +171,12 @@ export class CalendarViewComponent {
     for (let i = this.lastDayofMonth; i < 6; i++) {
       for (let j = 0; j < this.getDateFromUser.length; j++) {
         if (this.getDateFromUser[j] === `${i - this.lastDayofMonth + 1}/${this.month}/${this.year}`) {
-          days += `<li class="dummy ${i - this.lastDayofMonth + 1}/${this.month}/${this.year}">${i - this.lastDayofMonth + 1} ${this.getDateFromUser[j] === `${i - this.lastDayofMonth + 1}/${this.month}/${this.year}` ? this.getAppointmentTemplate(`${i - this.lastDayofMonth + 1}/${this.month}/${this.year}`) : ''}</li>`;
+          days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dummy dateEl ${i - this.lastDayofMonth + 1}/${this.month}/${this.year}">${i - this.lastDayofMonth + 1} ${this.getDateFromUser[j] === `${i - this.lastDayofMonth + 1}/${this.month}/${this.year}` ? this.getAppointmentTemplate() : ''}</div>`;
           iterator.push(i);
         }
       }
       if (this.getDateFromUser.length <= 0 || !iterator.includes(i)) {
-        days += `<li class="dummy ${i - this.lastDayofMonth + 1}/${this.month}/${this.year}">${i - this.lastDayofMonth + 1}</li>`;
+        days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dummy dateEl ${i - this.lastDayofMonth + 1}/${this.month}/${this.year}">${i - this.lastDayofMonth + 1}</div>`;
       }
     }
     // display all days inside the HTML file
@@ -182,11 +188,13 @@ export class CalendarViewComponent {
     this.monthYearElement.innerHTML = `${this.dmObj.months[this.month]}, ${this.year}`;
   }
 
-  getAppointmentTemplate(date: any) {
-    return `<div class='appointment ${date}' cdkDrag style='padding: 0.5rem;margin: 0.2rem;background-color: #000;border-radius: 5px;color: #fff;'>✅booked</div>`
+  getAppointmentTemplate() {
+    const checker = true;
+    return `<div class='appointment' ${checker ? 'cdkDrag' : ''} style='padding: 0.5rem;margin: 0.2rem;background-color: #000;border-radius: 5px;color: #fff;'>✅booked</div>`;
   }
 
   drop(event: CdkDragDrop<string[]>) {
+    console.log(event.previousContainer, event.container);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
