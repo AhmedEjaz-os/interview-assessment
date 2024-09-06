@@ -1,73 +1,100 @@
 <ng-container *ngTemplateOutlet="form"></ng-container>
 <ng-container *ngTemplateOutlet="calender"></ng-container>
+<div class="example-container">
+  <h2>To do</h2>
+
+  <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="[doneList]"
+    class="example-list" (cdkDropListDropped)="drop($event)">
+    @for (item of todo; track item) {
+    <div class="example-box" cdkDrag>{{item}}</div>
+    }
+  </div>
+</div>
+
+<div class="example-container">
+  <h2>Done</h2>
+
+  <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
+    class="example-list" (cdkDropListDropped)="drop($event)">
+    @for (item of done; track item) {
+    <div class="example-box" cdkDrag>{{item}}</div>
+    }
+  </div>
+</div>
 
 <ng-template #form>
-  <mat-form-field>
-    <mat-label>Choose a date</mat-label>
-    <input matInput [matDatepicker]="picker">
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+  <div style="display: flex; align-items: center; margin-top: 500px; margin-bottom: 50px;">
+    <mat-form-field>
+      <mat-label>Choose a date</mat-label>
+      <input [(ngModel)]="SelectedDate" matInput [matDatepicker]="picker">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <button mat-flat-button [disabled]="SelectedDate === null" (click)="onSubmit()" style="margin-left: 20px;">Submit</button>
+  </div>
 </ng-template>
 
 <ng-template #calender>
-    <div class="calendar dark">
-      <div class="calendar_inner">
-        <div class="calendar_controls">
-          <div class="calendar_headings" id="calendar_headings">
-            <i class="fa-solid fa-arrow-left" id="prev"></i>
-            <h2 class="months_year"></h2>
-            <i class="fa-solid fa-arrow-right" id="next"></i>
-          </div>
-          <div class="current_datetime">
-            <p class="daytxt">Today</p>
-            <p class="datetxt" id="datetxt">Tue, 10, Oct 2023</p>
-          </div>
-          <div class="days_date">
-            <ul class="days">
-              <li>Sun</li>
-              <li>Mon</li>
-              <li>Tue</li>
-              <li>Wed</li>
-              <li>Thu</li>
-              <li>Fri</li>
-              <li>Sat</li>
-            </ul>
-            <ul class="dates" id="dates">
-              <li>1</li>
-              <li>2</li>
-              <li>3</li>
-              <li>4</li>
-              <li class="active">5</li>
-              <li>6</li>
-              <li>7</li>
-              <li>8</li>
-              <li>9</li>
-              <li>10</li>
-              <li>11</li>
-              <li>12</li>
-              <li>13</li>
-              <li>14</li>
-              <li>15</li>
-              <li>17</li>
-              <li>18</li>
-              <li>19</li>
-              <li>20</li>
-              <li>21</li>
-              <li>22</li>
-              <li>23</li>
-              <li>24</li>
-              <li>25</li>
-              <li class="dummy">26</li>
-              <li class="dummy">27</li>
-              <li class="dummy">28</li>
-              <li class="dummy">29</li>
-              <li class="dummy">30</li>
-            </ul>
-          </div>
+  <div class="calendar dark">
+    <div class="calendar_inner">
+      <div class="calendar_controls">
+        <div class="calendar_headings" #calendar_headings id="calendar_headings">
+          <span class="fa-solid fa-arrow-left" (click)="prevMonth()" id="prev">
+            < </span>
+              <div #month_year id="month_year"></div>
+              <span class="fa-solid fa-arrow-right" (click)="nextMonth()" id="next">
+                >
+              </span>
+        </div>
+        <div class="current_datetime">
+          <p class="daytxt" style="color: #fff;">Today</p>
+          <p class="datetxt" #datetxt id="datetxt">Tue, 10, Oct 2023</p>
+        </div>
+        <div class="days_date">
+          <ul class="days">
+            <li>Sun</li>
+            <li>Mon</li>
+            <li>Tue</li>
+            <li>Wed</li>
+            <li>Thu</li>
+            <li>Fri</li>
+            <li>Sat</li>
+          </ul>
+          <ul cdkDropListGroup class="dates" #dates id="dates">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li class="active">5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>11</li>
+            <li>12</li>
+            <li>13</li>
+            <li>14</li>
+            <li>15</li>
+            <li>16</li>
+            <li>17</li>
+            <li>18</li>
+            <li>19</li>
+            <li>20</li>
+            <li>21</li>
+            <li>22</li>
+            <li>23</li>
+            <li>24</li>
+            <li>25</li>
+            <li class="dummy">26</li>
+            <li class="dummy">27</li>
+            <li class="dummy">28</li>
+            <li class="dummy">29</li>
+            <li class="dummy">30</li>
+          </ul>
         </div>
       </div>
     </div>
-    <div id="month_year"></div>
+  </div>
 </ng-template>
