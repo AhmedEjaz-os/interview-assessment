@@ -2,7 +2,7 @@
 <ng-container *ngTemplateOutlet="calender"></ng-container>
 
 <ng-template #form>
-  <div style="display: flex; align-items: center; margin-top: 500px; margin-bottom: 50px;">
+  <div style="display: flex; align-items: center; margin-top: 20px; margin-bottom: 50px;">
     <mat-form-field>
       <mat-label>Choose a date</mat-label>
       <input [(ngModel)]="SelectedDate" matInput [matDatepicker]="picker">
@@ -78,5 +78,5 @@
       </div>
     </div>
   </div>
-  <div #appointment class='appointment' cdkDrag style='padding: 0.5rem;margin: 0.2rem;background-color: #000;border-radius: 5px;color: #fff;'>✅booked</div>
+  <!-- <div #appointment class='appointment' cdkDrag style='padding: 0.5rem;margin: 0.2rem;background-color: #000;border-radius: 5px;color: #fff;'>✅booked</div> -->
 </ng-template>
