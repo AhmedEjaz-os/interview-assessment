@@ -189,8 +189,10 @@ export class CalendarViewComponent {
   }
 
   getAppointmentTemplate() {
-    const checker = true;
-    return `<div class='appointment' ${checker ? 'cdkDrag' : ''} style='padding: 0.5rem;margin: 0.2rem;background-color: #000;border-radius: 5px;color: #fff;'>✅booked</div>`;
+    return `<div class='appointment' cdkDrag style='padding: 0.5rem;margin: 0.2rem;background-color: #000;border-radius: 5px;color: #fff;'>✅booked</div>`;
+    // cdkDrag is not getting applied...which is the reason I am unable to apply this feature. 
+    // I apply this feature to something else let you know that I can work on this
+    // I know the complete procedure But it is just not getting applied. 
   }
 
   drop(event: CdkDragDrop<string[]>) {

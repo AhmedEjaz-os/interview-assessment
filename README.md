@@ -2,6 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.1.
 
+## Why I could not add the drap and drop feature
+    cdkDrag is not getting applied...which is the reason I am unable to apply this feature. 
+    apply this feature to something else let you know that I can work on this
+    know the complete procedure But it is just not getting applied.
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.

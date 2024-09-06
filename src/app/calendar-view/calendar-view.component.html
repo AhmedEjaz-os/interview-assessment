@@ -10,7 +10,7 @@
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <button mat-flat-button [disabled]="SelectedDate === null" (click)="onSubmit()" style="margin-left: 20px;">Submit</button>
+    <button mat-flat-button [disabled]="SelectedDate === null" (click)="onSubmit()" style="margin-left: 20px;">Add Appointment</button>
   </div>
 </ng-template>
 
@@ -78,5 +78,5 @@
       </div>
     </div>
   </div>
-  <!-- <div #appointment class='appointment' cdkDrag style='padding: 0.5rem;margin: 0.2rem;background-color: #000;border-radius: 5px;color: #fff;'>✅booked</div> -->
+  <div #appointment class='appointment' cdkDrag style='display: none;padding: 0.5rem;margin: 0.2rem;background-color: #000;border-radius: 5px;color: #fff;'>✅booked</div>
 </ng-template>
