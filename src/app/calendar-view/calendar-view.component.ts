@@ -42,8 +42,6 @@ export class CalendarViewComponent {
   @ViewChild('dates') datesEl: ElementRef;
   @ViewChild('month_year') monthYearEl: ElementRef;
   @ViewChild('appointment') appointment: ElementRef;
-  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
-  done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
   dateObj: any;
   dayName: any;
   month: any;
@@ -135,7 +133,6 @@ export class CalendarViewComponent {
     this.lastDateofLastMonth = new Date(this.year, this.month, 0)?.getDate();
     let days: any = "";
     let iterator: any = [];
-    // previous month last days
 
     for (let i = this.firtDayOfMonth; i > 0; i--) {
       for (let j = 0; j < this.getDateFromUser.length; j++) {
