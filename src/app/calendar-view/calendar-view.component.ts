@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, OnInit, Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,17 +35,17 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CalendarViewComponent {
+export class CalendarViewComponent implements OnInit, AfterViewInit {
   @ViewChild('datetxt') datetxtEl: ElementRef;
   @ViewChild('dates') datesEl: ElementRef;
   @ViewChild('month_year') monthYearEl: ElementRef;
   @ViewChild('appointment') appointment: ElementRef;
-  dateObj: any;
-  dayName: any;
-  month: any;
-  year: any;
-  date: any;
-  SelectedDate: any = null;
+  dateObj: Date;
+  dayName: string;
+  month: number;
+  year: number;
+  date: Date | number;
+  SelectedDate: Date;
   dmObj = {
     days: [
       "Sunday",
@@ -73,13 +73,11 @@ export class CalendarViewComponent {
   };
   datesElement: any;
   monthYearElement: any;
-  firtDayOfMonth: any = null;
-  lastDateofMonth: any = null;
-  lastDayofMonth: any = null;
-  lastDateofLastMonth: any = null;
+  firtDayOfMonth: number;
+  lastDateofMonth: number;
+  lastDayofMonth: number;
+  lastDateofLastMonth: number;
   getDateFromUser: any = [];
-
-  constructor() { }
 
   ngOnInit() {
     // date object
@@ -130,9 +128,9 @@ export class CalendarViewComponent {
     let iterator = 1;
 
     for (let i = this.firtDayOfMonth; i > 0; i--) {
-      let item: any = document.querySelectorAll(`#dateElement${iterator}`);
-      let appointmentTemplate: any = document.querySelector(`#appointmentTemplate${iterator}`);
-      let dateParent: any = document.querySelectorAll(`#dateElementParent${iterator}`);
+      const item: any = document.querySelectorAll(`#dateElement${iterator}`);
+      const appointmentTemplate: any = document.querySelector(`#appointmentTemplate${iterator}`);
+      const dateParent: any = document.querySelectorAll(`#dateElementParent${iterator}`);
       if (dateParent[0]) {
         dateParent[0].classList.remove(`${dateParent[0].classList[2]}`);
         dateParent[0].classList.add(`${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}`);
@@ -146,9 +144,9 @@ export class CalendarViewComponent {
       iterator += 1;
     }
     for (let i = 1; i <= this.lastDateofMonth; i++) {
-      let item: any = document.querySelectorAll(`#dateElement${iterator}`);
-      let appointmentTemplate: any = document.querySelectorAll(`#appointmentTemplate${iterator}`);
-      let dateParent: any = document.querySelectorAll(`#dateElementParent${iterator}`);
+      const item: any = document.querySelectorAll(`#dateElement${iterator}`);
+      const appointmentTemplate: any = document.querySelectorAll(`#appointmentTemplate${iterator}`);
+      const dateParent: any = document.querySelectorAll(`#dateElementParent${iterator}`);
       if (dateParent[0]) {
         dateParent[0].classList.remove(`${dateParent[0].classList[2]}`);
         dateParent[0].classList.add(`${i}/${this.month}/${this.year}`);
@@ -169,9 +167,9 @@ export class CalendarViewComponent {
     }
     //next month first days
     for (let i = this.lastDayofMonth; i < 6; i++) {
-      let item: any = document.querySelectorAll(`#dateElement${iterator}`);
-      let appointmentTemplate: any = document.querySelector(`#appointmentTemplate${iterator}`);
-      let dateParent: any = document.querySelectorAll(`#dateElementParent${iterator}`);
+      const item: any = document.querySelectorAll(`#dateElement${iterator}`);
+      const appointmentTemplate: any = document.querySelector(`#appointmentTemplate${iterator}`);
+      const dateParent: any = document.querySelectorAll(`#dateElementParent${iterator}`);
       if (dateParent[0]) {
         dateParent[0].classList.remove(`${dateParent[0].classList[2]}`);
         dateParent[0].classList.add(`${i - this.lastDayofMonth + 1}/${this.month + 1}/${this.year}`);
