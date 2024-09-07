@@ -6,8 +6,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import {
   CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
   CdkDrag,
   CdkDropList,
   CdkDropListGroup
@@ -75,7 +73,6 @@ export class CalendarViewComponent {
   };
   datesElement: any;
   monthYearElement: any;
-  appointmentElement: any;
   firtDayOfMonth: any = null;
   lastDateofMonth: any = null;
   lastDayofMonth: any = null;
@@ -97,7 +94,6 @@ export class CalendarViewComponent {
     this.datetxtEl.nativeElement.innerHTML = `${this.dayName},${this.date}, ${this.dmObj.months[this.month]}, ${this.year}`;
     this.datesElement = this.datesEl.nativeElement;
     this.monthYearElement = this.monthYearEl.nativeElement;
-    this.appointmentElement = this.appointment.nativeElement;
     this.monthYearElement.innerHTML = `${this.dmObj.months[this.month]}, ${this.year}`;
     this.displayCalendar();
   }
@@ -131,80 +127,84 @@ export class CalendarViewComponent {
     this.lastDateofMonth = new Date(this.year, this.month + 1, 0)?.getDate();
     this.lastDayofMonth = new Date(this.year, this.month, this.lastDateofMonth)?.getDay();
     this.lastDateofLastMonth = new Date(this.year, this.month, 0)?.getDate();
-    let days: any = "";
-    let iterator: any = [];
+    let iterator = 1;
 
     for (let i = this.firtDayOfMonth; i > 0; i--) {
-      for (let j = 0; j < this.getDateFromUser.length; j++) {
-        if (this.getDateFromUser[j] === `${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}`) {
-          days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dateEl dummy ${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}">${this.lastDateofLastMonth - i + 1} ${this.getDateFromUser[j] === `${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}` ? this.getAppointmentTemplate() : ''} </div>`;
-          iterator.push(i);
-        } 
+      let item: any = document.querySelectorAll(`#dateElement${iterator}`);
+      let appointmentTemplate: any = document.querySelector(`#appointmentTemplate${iterator}`);
+      let dateParent: any = document.querySelectorAll(`#dateElementParent${iterator}`);
+      if (dateParent[0]) {
+        dateParent[0].classList.remove(`${dateParent[0].classList[2]}`);
+        dateParent[0].classList.add(`${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}`);
+      } 
+      item[0].innerHTML = `${this.lastDateofLastMonth - i + 1}`;
+      item[0].classList.remove("active");
+      item[0].classList.add('dummy');
+      if (appointmentTemplate[0]) {
+        appointmentTemplate[0].style.display = this.getDateFromUser.includes(`${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}`) ? 'block' : 'none';
       }
-      if (this.getDateFromUser.length <= 0 || (!iterator.includes(i))) {
-        days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dateEl dummy ${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}">${this.lastDateofLastMonth - i + 1} </div>`;
-      }
+      iterator += 1;
     }
-    iterator = [];
     for (let i = 1; i <= this.lastDateofMonth; i++) {
-      let checkToday =
-        i === this.dateObj.getDate() &&
-          this.month + 1 === new Date().getMonth() + 1 &&
-          this.year === new Date().getFullYear()
-          ? `active ${i}/${this.month + 1}/${this.year}`
-          : `${i}/${this.month + 1}/${this.year}`;
-      for (let j = 0; j < this.getDateFromUser.length; j++) {
-        if (this.getDateFromUser[j] === `${i}/${this.month + 1}/${this.year}`) {
-          days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dateEl ${checkToday}">${i} ${this.getDateFromUser[j] === `${i}/${this.month + 1}/${this.year}` ? this.getAppointmentTemplate() : ''}</div>`;
-          iterator.push(i);
-        }
+      let item: any = document.querySelectorAll(`#dateElement${iterator}`);
+      let appointmentTemplate: any = document.querySelectorAll(`#appointmentTemplate${iterator}`);
+      let dateParent: any = document.querySelectorAll(`#dateElementParent${iterator}`);
+      if (dateParent[0]) {
+        dateParent[0].classList.remove(`${dateParent[0].classList[2]}`);
+        dateParent[0].classList.add(`${i}/${this.month}/${this.year}`);
       }
-      if (this.getDateFromUser.length <= 0 || (!iterator.includes(i))) {
-        days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dateEl ${checkToday}">${i}</div>`;
+      item[0].innerHTML = `${i}`;
+      item[0].classList.remove("dummy");
+      if (i === this.dateObj.getDate() &&
+        this.month === new Date().getMonth() &&
+        this.year === new Date().getFullYear()) {
+          item[0].classList.add('active');
+      } else {
+        item[0].classList.remove("active");
       }
+      if (appointmentTemplate[0]) {
+        appointmentTemplate[0].style.display = this.getDateFromUser.includes(`${i}/${this.month}/${this.year}`) ? 'block' : 'none';
+      }
+      iterator += 1;
     }
-    iterator = [];
     //next month first days
     for (let i = this.lastDayofMonth; i < 6; i++) {
-      for (let j = 0; j < this.getDateFromUser.length; j++) {
-        if (this.getDateFromUser[j] === `${i - this.lastDayofMonth + 1}/${this.month}/${this.year}`) {
-          days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dummy dateEl ${i - this.lastDayofMonth + 1}/${this.month}/${this.year}">${i - this.lastDayofMonth + 1} ${this.getDateFromUser[j] === `${i - this.lastDayofMonth + 1}/${this.month}/${this.year}` ? this.getAppointmentTemplate() : ''}</div>`;
-          iterator.push(i);
-        }
+      let item: any = document.querySelectorAll(`#dateElement${iterator}`);
+      let appointmentTemplate: any = document.querySelector(`#appointmentTemplate${iterator}`);
+      let dateParent: any = document.querySelectorAll(`#dateElementParent${iterator}`);
+      if (dateParent[0]) {
+        dateParent[0].classList.remove(`${dateParent[0].classList[2]}`);
+        dateParent[0].classList.add(`${i - this.lastDayofMonth + 1}/${this.month + 1}/${this.year}`);
       }
-      if (this.getDateFromUser.length <= 0 || !iterator.includes(i)) {
-        days += `<div cdkDropList (cdkDropListDropped)="drop($event)" class="dummy dateEl ${i - this.lastDayofMonth + 1}/${this.month}/${this.year}">${i - this.lastDayofMonth + 1}</div>`;
+      item[0].innerHTML = `${i - this.lastDayofMonth + 1}`;
+      item[0].classList.remove("active");
+      item[0].classList.add('dummy');
+      console.log(this.getDateFromUser.includes(`${i - this.lastDayofMonth + 1}/${this.month + 1}/${this.year}`));
+      if (appointmentTemplate[0]) {
+        appointmentTemplate[0].style.display = this.getDateFromUser.includes(`${i - this.lastDayofMonth + 1}/${this.month + 1}/${this.year}`) ? 'block' : 'none';
       }
+      iterator += 1;
     }
     // display all days inside the HTML file
-    this.appendToHtml(days);
+    this.monthYearElement.innerHTML = `${this.dmObj.months[this.month]}, ${this.year}`;
   };
 
-  appendToHtml(days: any) {
-    this.datesElement.innerHTML = days;
-    this.monthYearElement.innerHTML = `${this.dmObj.months[this.month]}, ${this.year}`;
-  }
-
-  getAppointmentTemplate() {
-    return `<div class='appointment' cdkDrag style='padding: 0.5rem;margin: 0.2rem;background-color: #000;border-radius: 5px;color: #fff;'>✅booked</div>`;
-    // cdkDrag is not getting applied...which is the reason I am unable to apply this feature. 
-    // I apply this feature to something else let you know that I can work on this
-    // I know the complete procedure But it is just not getting applied. 
-  }
-
   drop(event: CdkDragDrop<string[]>) {
-    console.log(event.previousContainer, event.container);
+    if (!(this.getDateFromUser.includes(`${event.container.element.nativeElement.classList[2]}`))) {
+      this.getDateFromUser = [...this.getDateFromUser.filter((element: any) => element !== `${event.previousContainer.element.nativeElement.classList[2]}`), `${event.container.element.nativeElement.classList[2]}`];
+      this.displayCalendar();
+    }
   }
 
   onSubmit() {
     if (this.SelectedDate) {
-      if (!(this.getDateFromUser.includes(`${this.SelectedDate.getDate()}/${this.SelectedDate.getMonth() + 1}/${this.SelectedDate.getFullYear()}`))) {
+      if (!(this.getDateFromUser.includes(`${this.SelectedDate.getDate()}/${this.SelectedDate.getMonth()}/${this.SelectedDate.getFullYear()}`))) {
         this.getDateFromUser = [
           ...this.getDateFromUser,
-          `${this.SelectedDate.getDate()}/${this.SelectedDate.getMonth() + 1}/${this.SelectedDate.getFullYear()}`
+          `${this.SelectedDate.getDate()}/${this.SelectedDate.getMonth()}/${this.SelectedDate.getFullYear()}`
         ]
+        this.displayCalendar();
       }
-      this.displayCalendar();
     } else {
       this.getDateFromUser = undefined;
     }
