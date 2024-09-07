@@ -112,6 +112,15 @@ body {
         color: #262829;
       }
     }
+    div.dateElementParent {
+      &:hover {
+        background-color: #b3b3b3;
+        color: #262829;
+      }
+    }
+    .dateElementParent:has(.active) {
+      background: linear-gradient(to bottom, #03a9f4, #2196f3);
+    }
     .active {
       background: linear-gradient(to bottom, #03a9f4, #2196f3);
     }

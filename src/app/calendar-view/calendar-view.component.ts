@@ -140,8 +140,8 @@ export class CalendarViewComponent {
       item[0].innerHTML = `${this.lastDateofLastMonth - i + 1}`;
       item[0].classList.remove("active");
       item[0].classList.add('dummy');
-      if (appointmentTemplate[0]) {
-        appointmentTemplate[0].style.display = this.getDateFromUser.includes(`${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}`) ? 'block' : 'none';
+      if (appointmentTemplate) {
+        appointmentTemplate.style.display = this.getDateFromUser.includes(`${this.lastDateofLastMonth - i + 1}/${this.month - 1}/${this.year}`) ? 'block' : 'none';
       }
       iterator += 1;
     }
@@ -179,9 +179,8 @@ export class CalendarViewComponent {
       item[0].innerHTML = `${i - this.lastDayofMonth + 1}`;
       item[0].classList.remove("active");
       item[0].classList.add('dummy');
-      console.log(this.getDateFromUser.includes(`${i - this.lastDayofMonth + 1}/${this.month + 1}/${this.year}`));
-      if (appointmentTemplate[0]) {
-        appointmentTemplate[0].style.display = this.getDateFromUser.includes(`${i - this.lastDayofMonth + 1}/${this.month + 1}/${this.year}`) ? 'block' : 'none';
+      if (appointmentTemplate) {
+        appointmentTemplate.style.display = this.getDateFromUser.includes(`${i - this.lastDayofMonth + 1}/${this.month + 1}/${this.year}`) ? 'block' : 'none';
       }
       iterator += 1;
     }
